@@ -4,6 +4,7 @@ const Category =require("../models/Category");
 
 // CREATE CATEGORY
 exports.createCategory = async (req, res) => {
+  console.log(req.body);
   try {
     const { name } = req.body;
 
