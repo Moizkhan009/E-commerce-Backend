@@ -8,4 +8,5 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post('/products', addProduct);
 
+
 module.exports = router;
