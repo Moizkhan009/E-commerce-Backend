@@ -25,12 +25,17 @@ exports.createCategory = async (req, res) => {
 
 // GET ALL CATEGORIES
 exports.getCategories = async (req, res) => {
-  console.log("i am get")
   try {
     const categories = await Category.find();
-    res.status(200).json(categories);
+    res.status(200).json({
+      success: true,
+      categories: categories  // ✅ Send as object with categories array
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 

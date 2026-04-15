@@ -135,22 +135,25 @@ exports.updateProduct = async (req, res) => {
   }
 };
 // ✅ GET PRODUCTS BY CATEGORY
+// productsController.js
 exports.getProductsByCategory = async (req, res) => {
   try {
-    const products = await Product.find({
-      category: req.params.categoryId   // 🔥 YAHAN USE HOGA
-    }).populate('category');            // 🔥 AUR YEH BHI
-
+    const { categoryId } = req.params;  // ✅ Note: categoryId, not Id
+    console.log("Category ID:", categoryId);
+    
+    const products = await Product.find({ category: categoryId })
+      .populate('category', 'name');
+    
     res.status(200).json({
       success: true,
-      products
+      products: products,
+      count: products.length
     });
-
   } catch (error) {
+    console.error("Error:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: error.message
+      message: error.message
     });
   }
 };
