@@ -3,6 +3,8 @@ const Product = require('../models/Product');
 
 // ✅ ADD PRODUCT (Already exists in your code)
 exports.addProduct = async (req, res) => {
+  console.log(req.body);
+  
   try {
     const {
       name,
@@ -54,12 +56,11 @@ exports.addProduct = async (req, res) => {
 // 📥 GET ALL PRODUCTS (Already exists in your code)
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('category'); // ✅ FIX
 
-    res.status(200).json({
+    res.status(200).json(products ,{
       success: true,
       count: products.length,
-      products
     });
 
   } catch (error) {
@@ -130,6 +131,29 @@ exports.updateProduct = async (req, res) => {
       success: false,
       message: 'Server error',
       error: error.message
+    });
+  }
+};
+// ✅ GET PRODUCTS BY CATEGORY
+// productsController.js
+exports.getProductsByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params;  // ✅ Note: categoryId, not Id
+    console.log("Category ID:", categoryId);
+    
+    const products = await Product.find({ category: categoryId })
+      .populate('category', 'name');
+    
+    res.status(200).json({
+      success: true,
+      products: products,
+      count: products.length
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message
     });
   }
 };
