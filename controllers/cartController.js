@@ -4,15 +4,20 @@ const Product = require("../models/Product");
 
 // ✅ ADD TO CART
 const addToCart = async (req, res) => {
+
+
   try {
-    let { user, productId, qty } = req.body;
+    const user = req.user.id
+    console.log(user);
+    
+    let {productId, qty } = req.body;
 
     // 🔥 sanitize qty
     qty = Number(qty);
     if (isNaN(qty) || qty < 1) qty = 1;
 
-    if (!user || !productId) {
-      return res.status(400).json({ message: "user and productId required" });
+    if (!productId) {
+      return res.status(400).json({ message: " productId required" });
     }
 
     const product = await Product.findById(productId);
@@ -20,7 +25,7 @@ const addToCart = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    let cart = await Cart.findOne({ user });
+    let cart = await Cart.findOne({ user , productId });
 
     if (!cart) {
       cart = new Cart({ user, cartItems: [] });
@@ -35,6 +40,7 @@ const addToCart = async (req, res) => {
         Number(cart.cartItems[itemIndex].qty) + qty;
     } else {
       cart.cartItems.push({
+        
         product: product._id,
         name: product.name,
         image: product.image,
