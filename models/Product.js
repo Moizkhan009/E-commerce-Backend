@@ -46,7 +46,13 @@ const productSchema = new mongoose.Schema(
 
     badgeColor: {
       type: String // e.g. bg-red-500
-    }
+    },
+    countInStock: {
+   type: Number,
+   required: true,
+   default: 5
+   },
+
   },
   {
     timestamps: true
