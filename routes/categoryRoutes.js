@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   createCategory,
-  getCategories,  // ✅ Sahi function name
+  getCategories, 
   updateCategory,
   deleteCategory,
   getCategoryById
@@ -9,10 +9,8 @@ const {
 
 const router = express.Router();
 
-// ✅ Sabhi routes sahi handler functions ke saath
-// router.get("/category/:id", getCategoryById);
 router.post("/", createCategory);
-router.get("/categories", getCategories);  // ✅ getCategories use karo
+router.get("/categories", getCategories); 
 
 
 router.put("/:id", updateCategory);

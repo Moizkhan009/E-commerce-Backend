@@ -52,7 +52,16 @@ const productSchema = new mongoose.Schema(
    required: true,
    default: 5
    },
-
+sections: {
+    hotDeal: { type: Boolean, default: false },
+    trending: { type: Boolean, default: false },
+    topSelling: { type: Boolean, default: false },
+    topRated: { type: Boolean, default: false },
+    newArrival: { type: Boolean, default: false },
+    featured: { type: Boolean, default: false }
+  },
+   salesCount: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
   },
   {
     timestamps: true

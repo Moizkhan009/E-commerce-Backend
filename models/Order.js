@@ -1,39 +1,147 @@
+// // const mongoose = require("mongoose");
+
+// // const orderItemSchema = new mongoose.Schema(
+// //   {
+// //     product: {
+// //       type: mongoose.Schema.Types.ObjectId,
+// //       ref: "Product",
+// //       required: true,
+// //     },
+// //     name: { type: String, required: true },
+// //     image: { type: String, required: true },
+// //     price: { type: Number, required: true },
+// //     qty: { type: Number, required: true },
+// //   },
+// //   { _id: false }
+// // );
+
+// // const shippingAddressSchema = new mongoose.Schema(
+// //   {
+// //     address: { type: String, required: true },
+// //     city: { type: String, required: true },
+// //     postalCode: { type: String },
+// //     country: { type: String, default: "Pakistan" },
+// //   },
+// //   { _id: false }
+// // );
+
+// // const paymentResultSchema = new mongoose.Schema(
+// //   {
+// //     id: String,
+// //     status: String,
+// //     update_time: String,
+// //     email_address: String,
+// //   },
+// //   { _id: false }
+// // );
+
+// // const orderSchema = new mongoose.Schema(
+// //   {
+// //     user: {
+// //       type: mongoose.Schema.Types.ObjectId,
+// //       ref: "User",
+// //       required: true,
+// //     },
+
+// //     orderItems: [orderItemSchema],
+
+// //     shippingAddress: shippingAddressSchema,
+
+// //     paymentMethod: {
+// //       type: String,
+// //       required: true,
+// //       enum: ["COD", "Card", "JazzCash", "EasyPaisa"],
+// //     },
+
+// //     paymentResult: paymentResultSchema,
+
+// //     itemsPrice: { type: Number, required: true, default: 0 },
+// //     shippingPrice: { type: Number, required: true, default: 0 },
+// //     taxPrice: { type: Number, required: true, default: 0 },
+// //     totalPrice: { type: Number, required: true, default: 0 },
+
+// //     isPaid: { type: Boolean, required: true, default: false },
+// //     paidAt: Date,
+
+// //     isDelivered: { type: Boolean, required: true, default: false },
+// //     deliveredAt: Date,
+
+// //     status: {
+// //       type: String,
+// //       enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+// //       default: "pending",
+// //     },
+// //   },
+// //   {
+// //     timestamps: true,
+// //   }
+// // );
+
+// // module.exports = mongoose.model("Order", orderSchema);
+
+// const mongoose = require("mongoose");
+
+// const orderItemSchema = new mongoose.Schema({
+//   productId: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Product",
+//     required: true,
+//   },
+//   name: String,
+//   quantity: Number,
+//   price: Number,
+// });
+
+// const orderSchema = new mongoose.Schema(
+//   {
+//     user: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "User",
+//       required: true,
+//     },
+//     orderItems: [orderItemSchema],
+//     shippingAddress: {
+//       addressLine1: String,
+//       city: String,
+//       state: String,
+//     },
+//     paymentMethod: String,
+//     itemsPrice: Number,
+//     shippingPrice: Number,
+//     taxPrice: Number,
+//     totalPrice: Number,
+//     orderStatus: {
+//       type: String,
+//       default: "pending",
+//     },
+//   },
+//   { timestamps: true }
+// );
+
+// module.exports = mongoose.model("Order", orderSchema);
+
+
 const mongoose = require("mongoose");
 
-const orderItemSchema = new mongoose.Schema(
-  {
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
-    name: { type: String, required: true },
-    image: { type: String, required: true },
-    price: { type: Number, required: true },
-    qty: { type: Number, required: true },
+const orderItemSchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
   },
-  { _id: false }
-);
-
-const shippingAddressSchema = new mongoose.Schema(
-  {
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    postalCode: { type: String },
-    country: { type: String, default: "Pakistan" },
+  name: {
+    type: String,
+    required: true,
   },
-  { _id: false }
-);
-
-const paymentResultSchema = new mongoose.Schema(
-  {
-    id: String,
-    status: String,
-    update_time: String,
-    email_address: String,
+  quantity: {
+    type: Number,
+    required: true,
   },
-  { _id: false }
-);
+  price: {
+    type: Number,
+    required: true,
+  },
+});
 
 const orderSchema = new mongoose.Schema(
   {
@@ -45,36 +153,50 @@ const orderSchema = new mongoose.Schema(
 
     orderItems: [orderItemSchema],
 
-    shippingAddress: shippingAddressSchema,
+    shippingAddress: {
+      addressLine1: { type: String, required: true },
+      city: { type: String, required: true },
+      state: { type: String, required: true },
+    },
 
     paymentMethod: {
       type: String,
       required: true,
-      enum: ["COD", "Card", "JazzCash", "EasyPaisa"],
     },
 
-    paymentResult: paymentResultSchema,
+    itemsPrice: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
 
-    itemsPrice: { type: Number, required: true, default: 0 },
-    shippingPrice: { type: Number, required: true, default: 0 },
-    taxPrice: { type: Number, required: true, default: 0 },
-    totalPrice: { type: Number, required: true, default: 0 },
+    shippingPrice: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
 
-    isPaid: { type: Boolean, required: true, default: false },
-    paidAt: Date,
+    taxPrice: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
 
-    isDelivered: { type: Boolean, required: true, default: false },
-    deliveredAt: Date,
+    totalPrice: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
 
-    status: {
+    orderStatus: {
       type: String,
       enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
+
+    deliveredAt: Date,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Order", orderSchema);

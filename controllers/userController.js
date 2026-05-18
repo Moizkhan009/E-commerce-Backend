@@ -61,6 +61,7 @@ const loginUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role, 
       },
     });
   } catch (error) {
@@ -68,4 +69,63 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getAllCustomers = async (req, res) => {
+
+  try {
+
+    const users = await User.find({
+      role: "user",
+    });
+
+    const customers = users.map((user) => {
+
+      // Total Orders
+      const totalOrders = user.orders.length;
+
+      // Total Spent
+      const totalSpent = user.orders.reduce(
+        (acc, order) => acc + order.totalAmount,
+        0
+      );
+
+      // Last Order
+      const lastOrder =
+        user.orders.length > 0
+          ? user.orders[user.orders.length - 1].createdAt
+          : null;
+
+      return {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+
+        orders: totalOrders,
+
+        spent: `$${totalSpent}`,
+
+        status: user.isActive ? "active" : "inactive",
+
+        lastOrder: lastOrder
+          ? new Date(lastOrder).toLocaleDateString()
+          : "No Orders",
+
+        profilePicture: user.profilePicture,
+      };
+    });
+
+    res.status(200).json({
+      success: true,
+      customers,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
+module.exports = { registerUser, loginUser, getAllCustomers };
